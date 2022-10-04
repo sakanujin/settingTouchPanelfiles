@@ -80,15 +80,3 @@ arm_boost=1
 [all]
 dtoverlay=w1-gpio
 enable_uart=1
-#############################
-## SAKA adding description ### 
-###############################
-#Add the following command at the end of the config.txt file, it will take effect after rebooting the system.
-dtoverlay=ads7846_waveshare
-hdmi_group=2
-hdmi_mode=87
-hdmi_timings=480 0 40 10 80 800 0 13 3 32 0 0 0 60 0 32000000,cs=1,penirq=25,penirq_pull=2,speed=50000,keep_vref_on=0,swapxy=0,pmax=255,xohms=150,xmin=200,xmax=3900,ymin=200,ymax=3900
-
-#dtparam=i2c_arm=on          #saka comout 
-#dtoverlay=i2c-bcm2708       #saka comout 
-#dtparam=i2c_baudrate=50000  #saka comout 
