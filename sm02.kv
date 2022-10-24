@@ -1,0 +1,436 @@
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition 
+<Widget>:
+    font_name: 'mplus-2c-regular.ttf'
+ 
+<Display>:
+    name : 'Display'
+    BoxLayout:
+        orientation: "vertical"
+        on_touch_down: root.touch_down_def(args[1])
+        ScreenManager:
+            id: sm
+            #TextWidget:
+            Screen_Home:
+            Screen_KitchenTimer:
+            Screen_One:
+            Screen_Alert:
+            Screen_AGI:
+
+        BoxLayout:
+            size_hint: 1,  0.175
+            height: '48dp'
+
+            Button:
+                id : main_bt
+                canvas.after:
+                    Color:
+                        rgba: 0,0,0,1
+                    Line:
+                        width:3 
+                        rectangle: main_bt.x, main_bt.y, self.width, self.height
+
+                background_normal:""  # it is important for specify background color 
+                background_color: (234/255,227/255,227/255,1)
+                font_size: 38
+                text: 'メイン'
+                color: 0,0,0,1
+                on_press:
+                    sm.transition = SlideTransition(direction='right')
+                    #sm.current = 'TextWidget'
+                    sm.current = 'Screen_Home'
+            Button:
+                id:tmbt
+                background_normal:""  # it is important for specify background color 
+                background_color: (234/255,227/255,227/255,1)
+                color: 0,0,0,1
+                font_size: 38
+                text: 'タイマー'
+                on_press:
+                    sm.transition = SlideTransition(direction='left')
+                    sm.current = 'Screen_KitchenTimer'
+                canvas.after:
+                    Color:
+                        rgba: 0,0,0,1
+                    Line:
+                        width:3 
+                        rectangle: tmbt.x, tmbt.y, self.width, self.height
+            Button:
+                id:setbt
+                background_normal:""  # it is important for specify background color 
+                background_color: (234/255,227/255,227/255,1)
+                font_size: 38
+                text: '設定'
+                color: 0,0,0,1
+                on_press:
+                    sm.transition = SlideTransition(direction='left')
+                    sm.current = 'Screen_One'
+                canvas.after:
+                    Color:
+                        rgba: 0,0,0,1
+                    Line:
+                        width:3 
+                        rectangle: setbt.x, setbt.y, self.width, self.height
+
+############################################################################### 
+<Screen_Alert>:
+    name: 'Screen_Alert'
+    BoxLayout:
+        orientation:'horizontal'
+
+        Label:
+            id: alrt_1
+            color:247/255,76/255,119/255,255/255
+            text:"冷凍異常"
+            font_name: './mplus-2c-regular.ttf'
+            font_size:119
+
+        BoxLayout:
+            orientation:'vertical'
+            size_hint:  0.25, 1
+            BoxLayout:
+                size_hint:  0.25, 0.35 #saka3
+
+            Button:
+                id: btf4
+                on_press: root.btnBack()
+
+                Image:
+                    source: "sq_button_alart.png"
+                    pos: btf4.x + (0.3*self.width), btf4.top - (1.3*self.height)
+                #on_press:
+
+            Button:
+                id: btf5
+                on_press: root.btnBuzzOff()
+                Image:
+                    source: "sq_button_buzzer.png"
+                    pos: btf5.x + (0.3*self.width), btf5.top - (1.3*self.height)
+############################################################################### 
+<Screen_One>:
+    name: 'Screen_One'
+    BoxLayout:
+        orientation: 'horizontal'
+        size: root.size
+
+        BoxLayout:
+            orientation:'horizontal'
+            size: root.size
+
+            BoxLayout:
+                orientation:'vertical' #sakasaka
+                BoxLayout:
+                    size_hint:  0.25, 1 #saka KAKUHAN
+                BoxLayout:
+                    Label:
+                        background_color: 1,0,0,1
+                        id: labelf_1
+                        font_name: './mplus-2c-regular.ttf'
+                        font_size:42
+                        text_size:self.size
+                        text:"  撹拌モーター"
+                        halign: 'left'
+                        valign: 'center'
+                    BoxLayout:
+                        orientation:'horizontal'
+                        ToggleButton:
+                            group:"g1"
+                            id: btn_f1
+                            font_name: './mplus-2c-regular.ttf'
+                            font_size:50
+                            text:"連続"
+                            on_press: root.btRenzoku()
+                        ToggleButton:
+                            group:"g1"
+                            id: btn_f2
+                            font_name: './mplus-2c-regular.ttf'
+                            state:'down'
+                            font_size:50
+                            text:"断続"
+                            on_press: root.btDanzoku()
+
+
+                BoxLayout:
+                    Label:
+                        id: label1_1
+                        font_name: './mplus-2c-regular.ttf'
+                        font_size: 40
+                        halign: 'left'
+                        valign: 'center'
+                        text_size:self.size
+                        #text: "  冷凍機保護"
+                    Label:
+                        id: label1_2
+                        size_hint:  0.25, 1
+                        font_name: './mplus-2c-regular.ttf'
+                        font_size:120 
+                        #text: root.stMin
+                    Label:
+                        id: label1_3
+                        font_name: './mplus-2c-regular.ttf'
+                        font_size: 38
+                        #text: "分"
+
+<Screen_KitchenTimer>:
+    name: 'Screen_KitchenTimer'
+
+    BoxLayout:
+        orientation: 'horizontal'
+
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout: #sk04
+                size_hint:  0.25, 0.75
+            BoxLayout:
+                orientation: 'horizontal'
+                Label:
+                    text: 'タイマー'
+                    font_size:38
+                Label:
+                    text: str(root.left_time) # count down time
+                    color: 0.23,0.84,0.83,1
+                    #font_size: 170
+                    font_size: 115
+                    text_size:self.size
+                    valign:"middle"
+                    halign:"right"
+                Label:
+                    text: '分'
+                    font_size:58
+                    text_size:self.size
+                    halign:"center"
+
+            BoxLayout:
+                orientation: 'horizontal'
+                Label:
+                    text: '現在温度'
+                    font_size:38
+                Label:
+                    text: root.temp_now_KT
+                    font_size:100
+                    text_size:self.size
+                    valign:"middle"
+                    halign:"right"
+                Label:
+                    text_size:self.size
+                    halign:"center"
+                    text: '℃'
+                    font_size:58
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint:  0.25, 1
+
+            Button:
+                size_hint:  0.25, 0.75  #saka padding  button
+            Button:
+                id : bk1
+                background_normal:""  # it is important for specify background color 
+                background_color: (234/255,227/255,227/255,1)
+
+                #on_press:root.on_command('+10 sec')
+                on_press:root.on_command('+5 sec')
+                Image:
+                    source: "sq_button_up.png"
+                    #size : 150,150
+                    size : 70,70
+                    #pos: bk1.x + (0.3*self.width), bk1.top - (1.1*self.height)
+                    pos: bk1.x + (0.5*self.width), bk1.top - (1.1*self.height)
+
+            Button:
+                id : bk2
+                background_normal:""  # it is important for specify background color 
+                background_color: (234/255,227/255,227/255,1)
+
+                #on_press:root.on_command('-10 sec')
+                on_press:root.on_command('-5 sec')
+                Image:
+                    source: "sq_button_down.png"
+                    size : 70,70
+                    pos:bk2.pos
+                    #pos: bk2.x + (0.3*self.width), bk2.top - (1.1*self.height)
+                    pos: bk2.x + (0.5*self.width), bk2.top - (1 * self.height)
+
+            Button:
+                id: stst
+                background_normal:""  # it is important for specify background color 
+                background_color: (234/255,227/255,227/255,1)
+                color:0,0,0,1
+                text: '停止' if root.is_countdown else '開始'
+                font_size:40
+                on_press:root.on_command('start/stop')
+                canvas.after:
+                    Color:
+                        rgba: 0,0,0,1
+                    Line:
+                        width:3 
+                        rectangle: stst.x, stst.y, self.width, self.height
+
+
+            Button:
+                id :rst
+                background_normal:""  # it is important for specify background color 
+                background_color: (234/255,227/255,227/255,1)
+                color:0,0,0,1
+                text: 'リセット' 
+                #font_size:40
+                font_size:30
+                on_press:root.on_command('reset')
+                canvas.after:
+                    Color:
+                        rgba: 0,0,0,1
+                    Line:
+                        width:3 
+                        rectangle: rst.x, rst.y, self.width, self.height
+
+
+<Screen_AGI>:
+    name: 'Screen_AGI'
+
+    BoxLayout:
+        orientation:'vertical'
+        size: root.size
+        BoxLayout:
+            Label:
+                background_color: 1,0,0,1
+                id: labelf_1
+                font_name: './mplus-2c-regular.ttf'
+                font_size:58
+                text:"撹拌"
+            BoxLayout:
+                orientation:'horizontal'
+                ToggleButton:
+                    group:"g1"
+                    id: btn_f1
+                    font_name: './mplus-2c-regular.ttf'
+                    font_size:58
+                    text:"連続"
+                ToggleButton:
+                    group:"g1"
+                    id: btn_f2
+                    font_name: './mplus-2c-regular.ttf'
+                    font_size:58
+                    text:"断続"
+
+        BoxLayout:
+            #orientation:'vertical'
+            background_color: 0,0,1,1
+            canvas.before:
+                Color:
+                    rgba:0,1,0,1
+            Label:
+                color: 0,0,1,1
+                id: labelf_2
+                font_name: './mplus-2c-regular.ttf'
+                font_size:58
+                text:"冷凍異常"
+            Button:
+                id: btn_f4
+                font_name: './mplus-2c-regular.ttf'
+                font_size:58
+                text:"ブザー解除"
+
+#<TextWidget>:
+<Screen_Home>:
+    name: 'Screen_Home' 
+    BoxLayout:
+        orientation: 'horizontal'
+        size: root.size
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout: #
+                size_hint:  1, 0.75 #
+                Label: #
+                    id: label1_a #
+                    font_name: './mplus-2c-regular.ttf' #
+                    font_size: 38 #
+            BoxLayout:
+                size_hint:  1, 1.5
+                Label:
+                    id: label1_1
+                    font_name: './mplus-2c-regular.ttf'
+                    font_size: 38
+                    text: "現在温度"
+                Label:
+                    id: label1_2
+                    font_name: './mplus-2c-regular.ttf'
+                    font_size:170 
+                    text: root.temp_now
+                    text_size:self.size
+                    valign:"middle"
+                    halign:"right"
+                    color: 0.23,0.84,0.83,1
+                Label:
+                    id: label1_3
+                    font_name: './mplus-2c-regular.ttf'
+                    font_size: 58
+                    text_size:self.size
+                    halign:"center"
+                    text: "℃"
+            BoxLayout:
+                Label:
+                    id: label1_4
+                    font_name: './mplus-2c-regular.ttf'
+                    font_size: 38
+                    text: "設定温度"
+                Label:
+                    id: label1_5
+                    font_name: './mplus-2c-regular.ttf'
+                    font_size:100 
+                    text: root.temp_set
+                    text_size:self.size
+                    valign:"middle"
+                    halign:"right"
+                Label:
+                    id: label1_6
+                    font_name: './mplus-2c-regular.ttf'
+                    font_size: 58
+                    text_size:self.size
+                    #valigh:"bottom"
+                    #haligh:"right"
+                    halign:"center"
+                    text: "℃"
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint:  0.25, 1
+            Button:
+                id: buttona            # saka3
+                size_hint:  0.25, 0.35 #saka3
+                background_normal:""  # it is important for specify background color 
+
+            Button:
+                id: button2
+                background_normal:""  # it is important for specify background color 
+                background_color: (234/255,227/255,227/255,1)
+
+                on_press: root.btc2()
+                Image:
+                    source: "sq_button_up.png"
+                    size : 95,95
+                    pos: button2.x + (0.3*self.width), button2.top - (1.75*self.height)
+
+
+            Button:
+                id: button3
+                font_name: './mplus-2c-regular.ttf'
+                background_normal:""  # it is important for specify background color 
+                background_color: (234/255,227/255,227/255,1)
+
+                on_press: root.btc3()
+                Image:
+                    source: "sq_button_down.png"
+                    size : 95,95
+                    #pos: button3.x + (0.3*self.width), button3.top - (1.75*self.height)
+                    pos: button3.x + (0.3*self.width), button3.top - (1.50*self.height)
+
+<ToggleButton@ToggleButton>
+    background_color:(0,0,0,0)
+    background_normal:''
+    text_size: self.width,None
+    halign: 'center'
+    canvas.before:
+        Color:
+            rgba:(255/255,0/255,102/255,1) if self.state=='down' else (48/255,84/255,150/255,1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
